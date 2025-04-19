@@ -1,0 +1,34 @@
+# Ignore Docker image build artifacts
+**/Dockerfile.*
+**/image.tar
+
+# Ignore container-related files
+**/.docker
+**/docker-compose.override.yml
+**/.env
+
+# Ignore editor/IDE specific files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Ignore node_modules (if you have any)
+node_modules/
+
+# Ignore build or temporary files
+*.log
+*.bak
+*.tmp
+logs/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore dependency directories (if you use certain frameworks)
+vendor/
+dist/
+
+# Ignore Docker-related volume data
+.docker/

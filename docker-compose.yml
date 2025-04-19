@@ -1,0 +1,33 @@
+services:
+  photon:
+    container_name: photon-geocoder
+    image: geojar/photon-geocoder
+    restart: unless-stopped
+    volumes:
+      - ./data/photon_data/:/data/photon_data
+    ports:
+      - "${HOST_BIND_IP:-0.0.0.0}:${HOST_BIND_PORT:-2322}:2322"
+    environment:
+      # Only one of the following CORS options can be set at a time:
+      # - PHOTON_CORS_ANY: Enables CORS for any origin (if true)
+      # - PHOTON_CORS_ORIGIN: Defines specific allowed origins (comma-separated list)
+      # If both are set, the container will fail to start!
+      PHOTON_CORS_ANY: "true"
+      #PHOTON_CORS_ORIGIN: "https://example.com,https://another.com"
+    deploy:
+      resources:
+        limits:
+          memory: "${PHOTON_MEM_LIMIT:-1024M}"
+        reservations:
+          memory: "${PHOTON_MEM_RESERVATION:-512M}"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2322/api/?q=berlin&limit=1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+        compress: "true"
